@@ -66,6 +66,37 @@ New staff register as normal customers, then a SUPER_ADMIN ticks their roles in 
 | CUSTOMER_SUPPORT | View customers/orders/returns, retry emails, moderate reviews |
 | MARKETING_MANAGER | Coupons, banners, email templates, analytics |
 
+### Deploy on Vercel (temporary; Render later)
+
+Project settings: **Root Directory = `backend`**, framework auto-detected (FastAPI, entrypoint `index.py`,
+region `bom1` from `vercel.json`). Set these env vars in Vercel (same names as `.env`):
+
+| Variable | Value |
+|---|---|
+| `ENVIRONMENT` | `production` (or `staging` while testing) |
+| `DATABASE_URL`, `DB_PGBOUNCER=true` | Neon **pooled** (`-pooler`) string; use a separate prod DB/branch |
+| `DB_POOL_SIZE=1`, `DB_MAX_OVERFLOW=0` | Every serverless instance has its own pool; keep it tiny |
+| `REDIS_URL` | Upstash `rediss://…` |
+| `JWT_SECRET` | 32+ random chars (`openssl rand -hex 32`); the app refuses to start in staging/production without it |
+| `CORS_ORIGINS`, `FRONTEND_URL` | your frontend URL, e.g. `["https://shop.example.com"]` |
+| `BFF_SECRET` | same value as the frontend's `BFF_SECRET` |
+| `CLOUDINARY_*`, `MEDIA_FOLDER=hsc-prod` | as above |
+| `RUN_WORKER_IN_API=false` | no long-lived process on Vercel |
+| `CRON_SECRET` | random string, used by the job trigger below |
+| `PAYMENTS_PROVIDER=razorpay` + keys | required in production (`dev` is refused) |
+
+Run migrations from your machine against the production `DATABASE_URL` (`alembic upgrade head`); Vercel does not run them.
+
+**Background jobs.** Vercel can't run `python -m app.workers`, so a scheduler must call
+`GET https://<api>/internal/cron` with header `Authorization: Bearer <CRON_SECRET>` **every minute**; each job
+still runs on its own interval (emails every 5 s of backlog per tick, order expiry 1 min, etc.).
+Use [cron-job.org](https://cron-job.org) (free, 1-minute) — Vercel Cron on the Hobby plan only runs daily.
+Without it: no emails, unpaid orders never release stock, no tracking sync. Emails are delayed up to a minute.
+
+Limits to know: Hobby functions time out at 10 s by default (60 s max), CSV import and image uploads should
+stay small; cold starts add ~1–2 s to the first request after idle. Move to Render (`../render.yaml`) when ready: set
+`RUN_WORKER_IN_API=true` or run the worker, and drop the cron.
+
 ### Alternative: everything in Docker
 
 ```bash

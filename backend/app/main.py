@@ -32,6 +32,7 @@ from app.shipping.router import router as shipping_router
 from app.users.router import router as users_router
 from app.webhooks.router import router as webhooks_router
 from app.wishlist.router import router as wishlist_router
+from app.workers.router import router as cron_router
 
 settings = get_settings()
 configure_logging(settings.debug)
@@ -111,4 +112,5 @@ api_v1.include_router(search_router)
 api_v1.include_router(notifications_router)
 
 app.include_router(health_router)
+app.include_router(cron_router)
 app.include_router(api_v1)

@@ -91,3 +91,21 @@ async def test_reconcile_confirms_payment_whose_capture_webhook_was_lost(client,
     assert (await client.get(f"/api/v1/orders/{order['id']}", headers=customer)).json()[
         "status"
     ] == "CONFIRMED"
+
+
+async def test_cron_endpoint_runs_due_jobs_once_per_interval(client, monkeypatch):
+    from pydantic import SecretStr
+
+    from app.core.config import get_settings
+    from app.core.redis import redis
+
+    assert (await client.get("/internal/cron")).status_code == 404  # off without CRON_SECRET
+    monkeypatch.setattr(get_settings(), "cron_secret", SecretStr("tick"))
+    assert (await client.get("/internal/cron", headers={"Authorization": "Bearer nope"})).status_code == 404
+    async for key in redis.scan_iter("job:due:*"):
+        await redis.delete(key)
+
+    auth = {"Authorization": "Bearer tick"}
+    first = (await client.get("/internal/cron", headers=auth)).json()["ran"]
+    assert "drain_notifications" in first and "cleanup" in first
+    assert (await client.get("/internal/cron", headers=auth)).json()["ran"] == []  # nothing due yet

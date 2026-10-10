@@ -105,6 +105,19 @@ async def run_loop(stop: asyncio.Event) -> None:
         await asyncio.wait(pending, timeout=25)  # let in-flight jobs finish their current batch
 
 
+async def run_due() -> list[str]:
+    """One scheduler tick for serverless hosts (no long-lived process), triggered by GET /internal/cron.
+    A Redis key per job gates it to once per interval (minus slack so a 1-minute cron doesn't skip
+    beats); the advisory lock in run_job still prevents overlapping runs."""
+    ran = []
+    for job in JOBS:
+        due = await redis.set(f"job:due:{job.name}", 1, nx=True, ex=max(1, job.every_seconds - 5))
+        if due and await run_job(job):
+            ran.append(job.name)
+    await _heartbeat()
+    return ran
+
+
 async def main() -> None:
     settings = get_settings()
     configure_logging(settings.debug)

@@ -39,6 +39,8 @@ class Settings(BaseSettings):
     # Shared with the Next.js server (BFF_SECRET there): lets it forward visitors' IPs (X-Client-IP)
     # so per-IP limits apply to customers, not to the BFF itself.
     bff_secret: SecretStr | None = None
+    # Serverless hosts (Vercel): a cron calls GET /internal/cron with "Authorization: Bearer <this>".
+    cron_secret: SecretStr | None = None
 
     cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:3000"])
     frontend_url: str = "http://localhost:3000"
