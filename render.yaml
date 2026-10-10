@@ -1,0 +1,86 @@
+# Render Blueprint (infrastructure as code). Create one Blueprint per environment (staging,
+# production) from this file; each gets its own env group values. See docs/DEPLOYMENT.md.
+#
+# Database (Neon/Supabase), Redis (Upstash), Cloudinary, Razorpay, Shiprocket and SMTP are external
+# and configured through the `hsc-secrets` env group, so this stays portable to AWS/GCP later.
+
+envVarGroups:
+  - name: hsc-secrets
+    envVars:
+      - key: ENVIRONMENT
+        value: production            # set to "staging" in the staging Blueprint
+      - key: DATABASE_URL            # postgresql+asyncpg://...  (use the pooled URL + DB_PGBOUNCER=true)
+        sync: false
+      - key: DB_PGBOUNCER
+        value: "true"
+      - key: REDIS_URL               # rediss://... from Upstash
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true          # Render generates a strong random value once
+      - key: BFF_SECRET              # same value as BFF_SECRET in the Vercel project
+        sync: false
+      - key: CORS_ORIGINS            # ["https://thehotsmoothie.co"]
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
+      - key: SHIPROCKET_EMAIL
+        sync: false
+      - key: SHIPROCKET_PASSWORD
+        sync: false
+      - key: SHIPPING_WEBHOOK_TOKEN
+        generateValue: true
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_USERNAME
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+
+services:
+  - type: web
+    name: hsc-api
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    region: singapore              # closest Render region to India
+    plan: starter
+    numInstances: 1                # stateless: raise freely (or enable autoscaling)
+    healthCheckPath: /health/ready
+    autoDeploy: false              # deploys come from CI (deploy hook) after checks pass
+    preDeployCommand: alembic upgrade head   # a failed migration aborts the deploy
+    envVars:
+      - fromGroup: hsc-secrets
+      - key: WEB_CONCURRENCY
+        value: "2"
+      - key: CLIENT_IP_HEADER      # behind Cloudflare (recommended). Without Cloudflare: unset this and
+        value: cf-connecting-ip    # set TRUSTED_PROXY_HOPS=1 instead. See docs/SECURITY.md.
+
+  - type: worker
+    name: hsc-worker
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    region: singapore
+    plan: starter
+    dockerCommand: python -m app.workers
+    autoDeploy: false
+    envVars:
+      - fromGroup: hsc-secrets
