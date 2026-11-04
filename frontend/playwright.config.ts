@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test"
 
 // Runs against a production build (`npm run build` first) and a live API seeded with
-// `python -m scripts.seed_demo`, started with PAYMENTS_PROVIDER=dev so payments can be simulated.
+// `python -m scripts.seed_site`, started with PAYMENTS_PROVIDER=dev so payments can be simulated.
 const PORT = 3100
 
 export default defineConfig({

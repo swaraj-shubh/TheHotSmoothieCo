@@ -22,7 +22,7 @@ E-commerce platform for posters, prints, stickers and framed art.
 cd backend
 cp .env.example .env
 docker compose up --build            # Postgres, Redis, migrations, API on :8000, worker
-docker compose exec api python -m scripts.seed_demo      # demo catalog
+docker compose exec api python -m scripts.seed_site      # the store catalog
 docker compose exec api python -m scripts.create_admin you@example.com "Your Name"
 open http://localhost:8000/docs
 

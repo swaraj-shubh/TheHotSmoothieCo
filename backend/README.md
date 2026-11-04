@@ -20,6 +20,7 @@ cp .env.example .env
 | `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | [Cloudinary](https://console.cloudinary.com) → Settings → API Keys. |
 | `MEDIA_FOLDER=hsc-dev` | Cloudinary folder; use a different one per environment. |
 | `RUN_WORKER_IN_API=true` | Runs background jobs (emails, stock-hold expiry) inside the API, so no separate worker process. |
+| `SHIPPING_FLAT_PAISE=7900` | Delivery fee under the free-shipping threshold. The storefront's copy says Rs. 79, so keep them equal (`frontend/src/lib/site.ts`). |
 | `PAYMENTS_PROVIDER=dev` | Checkout shows a "Simulate payment" button; no Razorpay keys needed. |
 | `BFF_SECRET` | Any string; must equal `BFF_SECRET` in `frontend/.env.local`. |
 
@@ -33,11 +34,11 @@ cd backend
 python3.12 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 .venv/bin/alembic upgrade head                                           # create/upgrade tables
 .venv/bin/python -m scripts.create_admin you@thehotsmoothie.co "Your Name"  # SUPER_ADMIN; prompts for a password (12+ chars)
-.venv/bin/python -m scripts.seed_demo     # 8 demo posters + coupon WELCOME10 (uploads sampleImage/a_31.webp)
-.venv/bin/python -m scripts.seed_demo2    # "Mahadev & Nandi Under the Moon" with the 4 sampleImage photos
+.venv/bin/python -m scripts.seed_site     # the designed store: 3 collections, 5 posters, coupon WELCOME10
+.venv/bin/python -m scripts.seed_demo2    # optional: "Mahadev & Nandi Under the Moon" (needs seed_demo first)
 ```
 
-All three scripts are safe to re-run. Re-running `create_admin` with the same email resets that
+These scripts are safe to re-run; `seed_site --archive-demo` also hides what `seed_demo` created. Re-running `create_admin` with the same email resets that
 admin's password. The seed scripts refuse to run when `ENVIRONMENT=production`.
 
 ### 3. Run (every time)
@@ -82,6 +83,7 @@ region `bom1` from `vercel.json`). Set these env vars in Vercel (same names as `
 | `BFF_SECRET` | same value as the frontend's `BFF_SECRET` |
 | `CLOUDINARY_*`, `MEDIA_FOLDER=hsc-prod` | as above |
 | `RUN_WORKER_IN_API=false` | no long-lived process on Vercel |
+| `SHIPPING_FLAT_PAISE=7900` | matches the Rs. 79 in the storefront's copy |
 | `CRON_SECRET` | random string, used by the job trigger below |
 | `PAYMENTS_PROVIDER=razorpay` + keys | required in production (`dev` is refused) |
 

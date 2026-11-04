@@ -50,7 +50,7 @@ Cloudinary folder via `MEDIA_FOLDER`, a separate database and Redis).
 |---|---|---|
 | `PRICES_INCLUDE_TAX` | `true` | Listed prices are GST-inclusive |
 | `TAX_RATE_BPS` | `1800` | GST in basis points (18.00%). **Confirm the rate for printed posters with your accountant** |
-| `SHIPPING_FLAT_PAISE` | `9900` | ₹99 below the free-shipping threshold |
+| `SHIPPING_FLAT_PAISE` | `9900` (set `7900`, the storefront says ₹79) | Flat fee below the free-shipping threshold |
 | `FREE_SHIPPING_THRESHOLD_PAISE` | `99900` | Free shipping from ₹999 (after discount) |
 | `INVENTORY_HOLD_SECONDS` | `900` | How long checkout holds stock awaiting payment |
 | `MAX_CART_ITEM_QUANTITY` | `20` | Per line |

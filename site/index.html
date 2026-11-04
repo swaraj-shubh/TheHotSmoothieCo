@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Hot Smoothie Co. · Posters for people with questionable taste</title>
+<meta name="description" content="Limited-edition posters on 300 GSM glossy sheets for walls with opinions. Good taste is overrated.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/croc-wordmark.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="home" data-header="overlay">
+
+<main>
+  <section class="hero" aria-labelledby="hero-h">
+    <img class="hero__img" src="assets/hero.png" alt="">
+    <div class="hero__copy">
+      <h1 class="t-hero" id="hero-h">Good taste is overrated.</h1>
+      <a class="btn" href="shop.html">[ Shop the drop ]</a>
+    </div>
+  </section>
+
+  <section class="drop-bar" aria-label="Next drop">
+    <div class="drop-bar__left">
+      <span class="chip">DROP 002</span>
+      <span class="t-sub">Lands in</span>
+      <div class="timer" data-timer aria-hidden="true">
+        <div><b>00</b><small>DAYS</small></div><div><b>00</b><small>HRS</small></div><div><b>00</b><small>MIN</small></div><div><b>00</b><small>SEC</small></div>
+      </div>
+    </div>
+    <a class="btn btn--spark" href="#club">[ Get notified ]</a>
+  </section>
+
+  <section class="section wrap statement">
+    <h2 class="t-display">Hot smoothie? A poster company? What are we talking about?</h2>
+    <div class="statement__body t-head">
+      <p>Some people decorate to match the sofa.</p>
+      <p>Some choose art because it goes with the curtains.</p>
+      <p>And some people have an entire personality built around a fictional character, a questionable race strategy, or a family WhatsApp argument that happened three years ago.</p>
+      <p>We make posters for the third kind.</p>
+      <p class="brand">Welcome to The Hot Smoothie Co.</p>
+    </div>
+    <img src="assets/divider-ornament.svg" alt="" width="234" height="39">
+  </section>
+
+  <section class="section wrap tint" aria-labelledby="coll-h" style="padding-top:0">
+    <p class="t-sub" id="coll-h" style="max-width:430px;margin-bottom:40px">Meet the first residents of your walls.<br><span class="t-cap muted" style="display:block;margin-top:8px">Three worlds. An unreasonable amount of personality.</span></p>
+    <div class="collections">
+      <div class="coll"><a class="coll__media" href="collection.html?c=pretentious-fanboy"><img src="assets/collection-pretentious-fanboy.png" alt="Pretentious Fanboy poster on a leather sofa" loading="lazy"><span class="coll__name t-head">Pretentious Fanboy</span></a><a class="btn-link" href="collection.html?c=pretentious-fanboy">View collection <span aria-hidden="true">→</span></a></div>
+      <div class="coll"><a class="coll__media" href="collection.html?c=nerd-fiction"><img src="assets/collection-nerd-fiction.png" alt="Nerd Fiction poster next to a black cat" loading="lazy"><span class="coll__name t-head">Nerd Fiction</span></a><a class="btn-link" href="collection.html?c=nerd-fiction">View collection <span aria-hidden="true">→</span></a></div>
+      <div class="coll"><a class="coll__media" href="collection.html?c=baddie-era"><img src="assets/collection-baddie-era.png" alt="Baddie Era poster on a leather armchair" loading="lazy"><span class="coll__name t-head">Baddie Era</span></a><a class="btn-link" href="collection.html?c=baddie-era">View collection <span aria-hidden="true">→</span></a></div>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="ls-h" style="padding-top:0">
+    <h2 class="t-display" id="ls-h">Lowest Sellers</h2>
+    <p class="t-sub" style="margin:16px 0 40px">Because no two fingers can match.</p>
+    <div class="grid-products" id="bestsellers" style="grid-template-columns:repeat(3,1fr)"></div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="wall-h" style="padding-top:0">
+    <div class="wall-section">
+      <div class="wall-copy">
+        <span class="t-label brand">TRY BEFORE YOU HANG</span>
+        <h2 class="t-display" id="wall-h">See it on your wall.</h2>
+        <p class="t-sub">Pick a wall color and see how a poster sits in the room before it ships.</p>
+        <div class="pill-group" role="radiogroup" aria-label="Wall color">
+          <label class="pill"><input type="radio" name="wall" value="#e8b7a0" data-name="Peach blush" checked><span><i class="swatch" style="background:#e8b7a0"></i>Peach</span></label>
+          <label class="pill"><input type="radio" name="wall" value="#f2eadb" data-name="Linen"><span><i class="swatch" style="background:#f2eadb"></i>Linen</span></label>
+          <label class="pill"><input type="radio" name="wall" value="#1c1a19" data-name="Ink"><span><i class="swatch" style="background:#1c1a19"></i>Ink</span></label>
+          <label class="pill"><input type="radio" name="wall" value="#4ca33b" data-name="Croc green"><span><i class="swatch" style="background:#4ca33b"></i>Croc green</span></label>
+        </div>
+        <div class="divider t-label" style="opacity:.6">OR</div>
+        <div class="upload">
+          <img src="assets/icon-upload.svg" alt="" width="48" height="48">
+          <div><b>Upload a photo of your wall</b><span class="t-cap muted">Drag it here. JPG or PNG. We'll hang the poster for you.</span></div>
+          <button class="btn btn--outline" id="wall-browse" type="button">[ Browse ]</button>
+          <input type="file" id="wall-file" accept="image/jpeg,image/png" hidden>
+        </div>
+        <a class="btn" href="product.html?p=soul-punk">[ Try it with your poster ]</a>
+      </div>
+      <div class="wall-mock" id="wall-mock" role="img" aria-label="Soul Punk poster framed on a wall">
+        <div class="wall-mock__floor"></div>
+        <div class="wall-mock__frame"><img src="assets/poster-soul-punk.png" alt=""></div>
+        <span class="chip chip--outline" id="wall-chip">WALL: PEACH BLUSH</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="usp-h" style="padding-top:0">
+    <h2 class="t-display" id="usp-h" style="text-align:center;margin-bottom:56px">Just personality?</h2>
+    <div class="usp-grid">
+      <div class="usp"><span class="t-label brand">01</span><p class="t-sub">4-5 Days Delivery</p></div>
+      <div class="usp"><span class="t-label brand">02</span><p class="t-sub">300 GSM Glossy Sheets</p></div>
+      <div class="usp"><span class="t-label brand">03</span><p class="t-sub">Tamper-proof Packaging</p></div>
+      <div class="usp"><span class="t-label brand">04</span><p class="t-sub">Easy Returns</p></div>
+      <div class="usp"><span class="t-label brand">05</span><p class="t-sub">Limited Editions per Design</p></div>
+    </div>
+  </section>
+
+  <section class="section wrap dark" aria-labelledby="made-h" style="padding-top:120px;padding-bottom:120px">
+    <h2 class="t-display" id="made-h" style="color:var(--linen)">How it's made.</h2>
+    <p class="t-sub" style="margin-top:16px">From idea to wall, without cutting corners.</p>
+    <div class="steps">
+      <div class="step"><span class="t-price muted">01</span><h3 class="t-head">Picked</h3><p style="opacity:.85">Every design is chosen for a drop, not dumped into a catalogue.</p></div>
+      <div class="step"><span class="t-price muted">02</span><h3 class="t-head">Printed</h3><p style="opacity:.85">300 GSM glossy sheets, so the colors stay as loud as the idea.</p></div>
+      <div class="step"><span class="t-price muted">03</span><h3 class="t-head">Packed</h3><p style="opacity:.85">Tamper-proof packaging, at your door in 4-5 days.</p></div>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="rev-h">
+    <h2 class="t-display" id="rev-h">Reviewed by people with questionable taste.</h2>
+    <div class="reviews">
+      <figure class="review" style="margin:0"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote class="t-sub" style="margin:0">“Guests now ask about the wall before the wifi password.”</blockquote><figcaption class="t-cap muted">Customer name · City</figcaption></figure>
+      <figure class="review" style="margin:0"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote class="t-sub" style="margin:0">“It started an argument at dinner. Ten out of ten, would hang again.”</blockquote><figcaption class="t-cap muted">Customer name · City</figcaption></figure>
+      <figure class="review" style="margin:0"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote class="t-sub" style="margin:0">“Finally, a wall with more opinions than my family group chat.”</blockquote><figcaption class="t-cap muted">Customer name · City</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-label="Vinyl player" style="padding-top:0">
+    <div class="vinyl-split">
+      <div class="player" id="player">
+        <span class="t-label">PRESS PLAY. FEEL THE VIBE.</span>
+        <span class="player__status t-label"><i class="rec-dot"></i><span id="status">PLAYING</span></span>
+        <div class="record" aria-hidden="true"><div class="record__label"><img src="assets/croc-wordmark.png" alt=""></div></div>
+        <img class="tonearm" src="assets/tonearm.svg" alt="" aria-hidden="true">
+        <div class="player__now"><span class="t-label muted">NOW SPINNING</span><b id="track">Hang Tight (Croc Remix) — The Smoothies</b></div>
+        <div class="progress"><i id="bar"></i></div>
+        <div class="player__times t-cap"><span id="t-now">0:00</span><span id="track-n">1 / 7</span><span>3:47</span></div>
+        <div class="controls"><button class="ctrl" id="prev" aria-label="Previous">◀◀</button><button class="ctrl ctrl--main" id="play" aria-label="Pause">❚❚</button><button class="ctrl" id="next" aria-label="Next">▶▶</button></div>
+      </div>
+      <div style="display:grid;gap:24px;max-width:706px">
+        <h2 class="t-display">Not picked to match your cushions.</h2>
+        <p class="t-head">Picked because you saw it, felt personally attacked, and immediately knew where it belonged.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-label="Behind the drop" style="padding-top:0">
+    <div class="split">
+      <img class="rounded" src="assets/croc-duo.png" alt="Two crocs plotting something" loading="lazy">
+      <div class="split__copy">
+        <span class="t-label brand">BEHIND DROP 001</span>
+        <h2 class="t-display">Not good taste. Good stories.</h2>
+        <p class="t-sub">Drop-wise releases give each collection its own identity. They build anticipation, make the store feel like a discovery, and give you a reason to come back.</p>
+        <a class="btn-link" href="about.html">Read the drop notes <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-label="Croc's pick" style="padding-top:0">
+    <div class="pick">
+      <div class="pick__croc"><img src="assets/croc-wordmark.png" alt=""></div>
+      <div style="display:grid;gap:18px;justify-items:start">
+        <span class="t-label">CROC'S PICK THIS WEEK</span>
+        <h2 class="t-head">Badmash Pani Puri Wala</h2>
+        <p>The croc has spoken. Street-food royalty, now in poster form.</p>
+        <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap"><span class="t-price">Rs. 499</span><button class="tag-btn" data-add="badmash-pani-puri-wala" style="--tag-hole:var(--soft)"><span>Add to cart</span></button></div>
+      </div>
+      <img class="pick__poster" src="assets/poster-pani-puri-wala.png" alt="Badmash Pani Puri Wala poster">
+      <span class="croc-badge">Croc approved</span>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-label="Gift cards" style="padding-top:0">
+    <div class="gift">
+      <div style="display:grid;gap:18px;max-width:900px">
+        <span class="t-label" style="opacity:.85">GIFT CARDS</span>
+        <h2 class="t-display">For the friend who'd argue about it.</h2>
+        <p class="t-sub">Digital gift cards, delivered by email. They pick the obsession.</p>
+      </div>
+      <a class="ticket-btn ticket-btn--ink" href="gift-cards.html">Send a gift card</a>
+    </div>
+  </section>
+
+  <section class="section wrap" id="club" aria-label="Smoothie Club" style="padding-top:0">
+    <div class="pass-wrap">
+      <img class="pass-croc" src="assets/croc-mascot.png" alt="" loading="lazy">
+      <div class="pass">
+        <div class="pass__main">
+          <div class="pass__logo"><img src="assets/croc-wordmark.png" alt=""></div>
+          <div>
+            <p class="t-cap">SMOOTHIE CLUB · MEMBER PASS</p>
+            <h2 class="t-head" style="font-size:44px;margin:6px 0 14px">First dibs on every drop.</h2>
+            <p class="t-cap" style="max-width:520px;opacity:.85">Join 18,000 wall-obsessives. Early access, members-only prints, zero spam.</p>
+            <form class="pass__form" id="club-form" novalidate>
+              <label class="sr-only" for="club-email">Email address</label>
+              <input class="input input--pill" id="club-email" type="email" placeholder="Email address" required autocomplete="email">
+              <button class="ticket-btn" type="submit" style="--notch:var(--page)">Join the club</button>
+            </form>
+          </div>
+        </div>
+        <div class="pass__stub">
+          <span class="t-label" style="opacity:.8">YOUR WELCOME GIFT</span>
+          <span class="t-display" style="color:var(--ink);font-size:72px">10%</span>
+          <span style="opacity:.85">off your first order</span>
+          <img src="assets/barcode.svg" alt="" width="142" height="36" style="margin-top:16px">
+          <span class="t-cap" style="opacity:.8">HSC · 000214</span>
+        </div>
+        <span class="stamp"><span>Members only</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="faq-h" style="padding-top:0">
+    <div style="display:grid;grid-template-columns:minmax(0,480px) 1fr;gap:80px" class="faq-split">
+      <div style="display:grid;gap:16px;align-content:start">
+        <h2 class="t-display" id="faq-h">Questions, answered.</h2>
+        <p class="t-sub">Still stuck? Write to us from the <a href="contact.html" class="brand" style="text-decoration:underline">Contact page</a>.</p>
+        <a class="btn-link" href="faq.html" style="width:fit-content;margin-top:8px">All questions <span aria-hidden="true">→</span></a>
+      </div>
+      <div id="home-faq"></div>
+    </div>
+  </section>
+</main>
+
+<style>@media (max-width: 1280px){ .faq-split{grid-template-columns:1fr !important;gap:40px !important} #bestsellers{grid-template-columns:repeat(2,1fr) !important} } @media (max-width: 860px){ #bestsellers{grid-template-columns:repeat(2,1fr) !important} }</style>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

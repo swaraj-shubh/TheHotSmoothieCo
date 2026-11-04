@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coming soon · The Hot Smoothie Co.</title>
+<meta name="description" content="Drop 001 is blending. Join the waiting list and get first dibs when the wall opens.">
+<meta name="theme-color" content="#8a7459">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="/assets/croc-wordmark.png">
+<link rel="preload" as="image" href="/assets/coming-soon/scene.webp" type="image/webp">
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/coming-soon.css">
+</head>
+<body class="cs-body">
+<a class="sr-only" href="#signup">Skip to the signup form</a>
+
+<!-- Intro curtain: lifts once, then gets out of the way. Pure CSS. -->
+<div class="veil" aria-hidden="true"><img src="/assets/croc-wordmark.png" alt=""></div>
+
+<main class="cs" id="main-content">
+  <h1 class="sr-only">The Hot Smoothie Co. is coming soon</h1>
+
+  <div class="world" id="world">
+
+    <!-- Camera: everything inside pushes in together on load. -->
+    <div class="cam">
+      <div class="sky" aria-hidden="true"></div>
+
+      <!-- Depth stack, back to front: scene, lettering, characters, light.
+           data-depth = max parallax travel in px. Scene and characters share
+           one value so they stay registered; the lettering travels the other
+           way, so it visibly slides behind the characters. -->
+      <div class="layer fit l-scene" data-depth="8">
+        <img class="scene" src="/assets/coming-soon/scene.webp" alt="" width="1728" height="1117" fetchpriority="high" decoding="async">
+      </div>
+
+      <div class="layer fit l-letters" data-depth="-26" aria-hidden="true">
+        <div class="float"><img class="letters letters--wide" src="/assets/coming-soon/lettering.png" alt="" width="1665" height="555" decoding="async"></div>
+      </div>
+      <div class="layer l-letters-m" data-depth="-18" aria-hidden="true">
+        <div class="float">
+          <img class="letters letters--coming" src="/assets/coming-soon/lettering-coming.png" alt="" width="886" height="328" decoding="async">
+          <img class="letters letters--soon" src="/assets/coming-soon/lettering-soon.png" alt="" width="652" height="328" decoding="async">
+        </div>
+      </div>
+
+      <div class="layer fit l-duo" data-depth="8" aria-hidden="true">
+        <img class="duo" src="/assets/coming-soon/duo.png" alt="" width="1728" height="1117" decoding="async">
+      </div>
+
+      <div class="light" aria-hidden="true"></div>
+    </div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="top">
+      <a class="top__name" href="/coming-soon">The Hot Smoothie Co.</a>
+    </header>
+
+    <section class="dock" aria-label="Join the waiting list">
+      <div class="tilt" id="tilt">
+        <div class="signup" id="signup">
+          <span class="stamp signup__stamp" id="stamp" aria-hidden="true"><span id="stamp-label">Drop 001</span></span>
+
+          <div class="panels" id="panels">
+
+            <form class="panel panel--form" id="form" novalidate autocomplete="on">
+              <p class="t-cap signup__eyebrow rise" style="--i:0">Drop 001 · The waiting list</p>
+              <h2 class="t-head signup__title">
+                <span class="ln"><span style="--i:1">First dibs on</span></span>
+                <span class="ln"><span style="--i:2">Drop 001.</span></span>
+              </h2>
+              <p class="t-cap signup__body rise" style="--i:3">Drop your email and we will ping you the minute the wall opens.</p>
+
+              <div class="field rise" id="field" style="--i:4">
+                <label class="sr-only" for="email">Email address</label>
+                <input class="input input--pill" id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="Email address" required aria-describedby="email-msg">
+                <p class="err" id="email-msg" role="alert"></p>
+              </div>
+              <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+              <button class="ticket-btn rise" id="submit" type="submit" style="--i:5; --notch:var(--page)">Join the list</button>
+              <p class="t-cap signup__fine rise" style="--i:6">No spam. Unsubscribe anytime.</p>
+            </form>
+
+            <div class="panel panel--done" id="done" inert aria-hidden="true">
+              <span class="chip">On the list</span>
+              <h2 class="t-head signup__title" id="done-title" tabindex="-1">Wall secured.</h2>
+              <p class="t-cap signup__body" id="done-body">Check your inbox to confirm. The second Drop 001 opens, you hear it from us first.</p>
+              <p class="t-cap signup__fine">No email? Check spam, then tell the croc.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+  </div>
+</main>
+
+<script>
+  // Front-end only for now. Set this to a POST endpoint that accepts {email, source}
+  // and the form will use it; leave null and emails are kept in this browser only.
+  window.HSC_WAITLIST_ENDPOINT = null;
+</script>
+<script src="/js/coming-soon.js"></script>
+</body>
+</html>

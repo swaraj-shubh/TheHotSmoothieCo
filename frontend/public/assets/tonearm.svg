@@ -1,0 +1,8 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="150" height="300" viewBox="0 0 150 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Tonearm">
+<path id="Vector" d="M120 54C133.255 54 144 43.2548 144 30C144 16.7452 133.255 6 120 6C106.745 6 96 16.7452 96 30C96 43.2548 106.745 54 120 54Z" fill="#F2EADB" stroke-width="3" stroke="#1C1A19"/>
+<path id="Vector_2" d="M120 38C124.418 38 128 34.4183 128 30C128 25.5817 124.418 22 120 22C115.582 22 112 25.5817 112 30C112 34.4183 115.582 38 120 38Z" fill="#1C1A19"/>
+<path id="Vector_3" d="M120 30L112 220L70 270" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke="#1C1A19"/>
+<path id="Vector_4" d="M67.8879 252.217L47.9708 268.93C46.2785 270.35 46.0577 272.873 47.4777 274.565L56.4768 285.29C57.8968 286.982 60.4198 287.203 62.1121 285.783L82.0292 269.07C83.7215 267.65 83.9423 265.127 82.5223 263.435L73.5232 252.71C72.1032 251.018 69.5802 250.797 67.8879 252.217Z" fill="#C8261E" stroke-width="3" stroke="#1C1A19"/>
+</g>
+</svg>

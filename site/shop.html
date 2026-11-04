@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop · The Hot Smoothie Co.</title>
+<meta name="description" content="Every poster from The Hot Smoothie Co. 300 GSM glossy, limited editions, zero good taste required.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/croc-wordmark.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="shop">
+<main id="main-content">
+<nav class="crumbs wrap t-cap" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Collections</span></nav>
+<section class="wrap page-head">
+  <span class="t-label brand">THE WHOLE LINE-UP</span>
+  <h1 class="t-display">Every poster. Zero good taste required.</h1>
+  <p class="t-sub">Pick a world, or pick them all. Your walls will not file a complaint.</p>
+</section>
+<section class="wrap" style="display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-bottom:32px">
+  <div class="pill-group" id="filters" role="radiogroup" aria-label="Filter by collection"></div>
+  <div style="display:flex;align-items:center;gap:16px"><span class="t-cap muted" id="count" aria-live="polite"></span>
+    <label class="sr-only" for="sort">Sort</label>
+    <select class="input input--pill" id="sort" style="width:auto"><option value="featured">Featured</option><option value="az">A to Z</option></select></div>
+</section>
+<section class="wrap section--tight" style="padding-top:0;padding-bottom:96px"><div class="grid-products" id="grid"></div></section>
+</main>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collection · The Hot Smoothie Co.</title>
+<meta name="description" content="A Hot Smoothie Co. collection of limited-edition posters.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/croc-wordmark.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="collection">
+<main id="main-content">
+<nav class="crumbs wrap t-cap" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><a href="shop.html">Collections</a><span aria-hidden="true">/</span><span aria-current="page" id="c-crumb"></span></nav>
+<section class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding-top:40px;padding-bottom:72px" id="c-hero">
+  <div style="display:grid;gap:20px;justify-items:start">
+    <span class="t-label brand">COLLECTION</span>
+    <h1 class="t-display" id="c-name"></h1>
+    <p class="t-sub" id="c-tag"></p>
+    <p id="c-story" style="max-width:56ch"></p>
+    <a class="btn" href="#grid">[ Jump to the posters ]</a>
+  </div>
+  <img id="c-img" alt="" style="width:100%;aspect-ratio:480/542;object-fit:cover;border-radius:12px">
+</section>
+<section class="wrap" style="padding-bottom:32px;display:flex;justify-content:space-between;align-items:baseline"><h2 class="t-head">The posters</h2><span class="t-cap muted" id="c-count"></span></section>
+<section class="wrap" style="padding-bottom:96px"><div class="grid-products" id="grid"></div></section>
+<section class="wrap surface section" style="padding-top:72px;padding-bottom:72px">
+  <h2 class="t-head" style="margin-bottom:32px">Other worlds</h2>
+  <div class="collections" id="others" style="grid-template-columns:repeat(2,1fr)"></div>
+</section>
+<style>@media (max-width:860px){#c-hero{grid-template-columns:1fr !important;gap:32px !important}#others{grid-template-columns:1fr !important}}</style>
+</main>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

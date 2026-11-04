@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout · The Hot Smoothie Co.</title>
+<meta name="description" content="Check out from The Hot Smoothie Co.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/croc-wordmark.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="checkout">
+<main id="main-content">
+<nav class="crumbs wrap t-cap" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><a href="cart.html">Cart</a><span aria-hidden="true">/</span><span aria-current="page">Checkout</span></nav>
+<section class="wrap" style="padding-top:32px;padding-bottom:96px">
+  <h1 class="t-display" style="margin-bottom:48px">Almost on your wall.</h1>
+  <div class="cart-layout">
+    <form id="checkout" novalidate>
+      <fieldset class="check-sec" style="border:0;padding:0;margin:0 0 36px">
+        <legend class="t-head" style="margin-bottom:20px;padding:0">Contact</legend>
+        <div class="field"><label for="email">Email</label><input class="input" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com"><span class="err" id="err-email" role="alert"></span></div>
+      </fieldset>
+      <fieldset class="check-sec" id="ship-sec" style="border:0;padding:0;margin:0 0 36px">
+        <legend class="t-head" style="margin-bottom:20px;padding:0">Where does it go?</legend>
+        <div class="grid-2">
+          <div class="field"><label for="name">Full name</label><input class="input" id="name" name="name" autocomplete="name"><span class="err" id="err-name" role="alert"></span></div>
+          <div class="field"><label for="phone">Mobile</label><input class="input" id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="10-digit number"><span class="err" id="err-phone" role="alert"></span></div>
+        </div>
+        <div class="field"><label for="line1">Address</label><input class="input" id="line1" name="line1" autocomplete="address-line1" placeholder="House no, building, street"><span class="err" id="err-line1" role="alert"></span></div>
+        <div class="field"><label for="line2">Landmark (optional)</label><input class="input" id="line2" name="line2" autocomplete="address-line2"></div>
+        <div class="grid-2">
+          <div class="field"><label for="city">City</label><input class="input" id="city" name="city" autocomplete="address-level2"><span class="err" id="err-city" role="alert"></span></div>
+          <div class="field"><label for="state">State</label><input class="input" id="state" name="state" autocomplete="address-level1"><span class="err" id="err-state" role="alert"></span></div>
+        </div>
+        <div class="field" style="max-width:240px"><label for="pin">Pin code</label><input class="input" id="pin" name="pin" inputmode="numeric" maxlength="6" autocomplete="postal-code"><span class="err" id="err-pin" role="alert"></span></div>
+      </fieldset>
+      <fieldset class="check-sec" style="border:0;padding:0;margin:0 0 36px">
+        <legend class="t-head" style="margin-bottom:20px;padding:0">Pay however you like</legend>
+        <label class="radio-card"><input type="radio" name="pay" value="upi" checked><div><b>UPI</b><span class="t-cap muted">GPay, PhonePe, Paytm. Fastest way to your wall.</span></div></label>
+        <label class="radio-card"><input type="radio" name="pay" value="online"><div><b>Card / Netbanking</b><span class="t-cap muted">You will finish on our secure payment page.</span></div></label>
+        <label class="radio-card"><input type="radio" name="pay" value="cod"><div><b>Cash on Delivery</b><span class="t-cap muted">Pay when the croc knocks.</span></div></label>
+      </fieldset>
+      <button class="btn btn--block" type="submit" style="padding:18px">[ Place order ]</button>
+      <p class="t-cap muted" style="margin-top:14px;text-align:center">By placing your order you agree to our <a href="shipping-returns.html" style="text-decoration:underline">shipping &amp; returns policy</a>.</p>
+    </form>
+    <aside class="summary" aria-label="Order summary"><h2 class="t-head">Your order</h2><div id="sum" style="display:grid;gap:20px"></div><a class="link-quiet" href="cart.html" style="width:fit-content">Edit cart</a></aside>
+  </div>
+</section>
+</main>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

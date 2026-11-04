@@ -157,6 +157,49 @@ export async function getBanners(placement: "HOME_HERO" | "HOME_STRIP" | "SHOP_T
   }
 }
 
+export type CardExtra = { collection?: string; collectionSlug?: string; chip?: string }
+
+const CHIPS: Record<string, string> = { bestseller: "Bestseller", "new-drop": "New drop", "crocs-pick": "Croc’s pick" }
+
+/** Every active product. ponytail: stops at 500; the shop filters client-side like the design does,
+ *  so move filtering to the API if the catalogue outgrows that. */
+export async function getAllProducts(): Promise<ProductCard[]> {
+  "use cache"
+  cacheTag("catalog", "products")
+  cacheLife("minutes")
+  const all: ProductCard[] = []
+  let cursor: string | undefined
+  do {
+    const page = await getProducts({ limit: 100, cursor })
+    all.push(...page.items)
+    cursor = page.next_cursor ?? undefined
+  } while (cursor && all.length < 500)
+  return all
+}
+
+/** What a product card shows beyond the list API's fields: its collection name and chip.
+ *  Derived from the collection and tag filters, keyed by product id. */
+export async function getCardExtras(): Promise<Record<string, CardExtra>> {
+  "use cache"
+  cacheTag("catalog", "products", "collections")
+  cacheLife("minutes")
+  const extras: Record<string, CardExtra> = {}
+  const of = (id: string) => (extras[id] ??= {})
+  const [collections, ...chips] = await Promise.all([
+    getCollections(),
+    ...Object.keys(CHIPS).map((tag) => getProducts({ tag, limit: 100 }).then((p) => [tag, p.items] as const)),
+  ])
+  const lists = await Promise.all(collections.map((c) => getProducts({ collection: c.slug, limit: 100 })))
+  collections.forEach((c, i) =>
+    lists[i].items.forEach((p) => {
+      of(p.id).collection ??= c.name
+      of(p.id).collectionSlug ??= c.slug
+    }),
+  )
+  for (const [tag, items] of chips) for (const p of items) of(p.id).chip ??= CHIPS[tag]
+  return extras
+}
+
 /** Slugs to prerender at build time (bestsellers). Falls back to a placeholder that 404s so the
  *  build never depends on the API being reachable. */
 export async function getPrerenderSlugs(): Promise<string[]> {

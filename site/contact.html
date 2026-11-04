@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact · The Hot Smoothie Co.</title>
+<meta name="description" content="Write to The Hot Smoothie Co.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/croc-wordmark.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="contact">
+<main id="main-content">
+<nav class="crumbs wrap t-cap" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Contact</span></nav>
+<section class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:72px;padding-top:48px;padding-bottom:96px" id="contact-grid">
+  <div style="display:grid;gap:24px;align-content:start;justify-items:start">
+    <span class="t-label brand">TALK TO US</span>
+    <h1 class="t-display">Tell us what is on your mind. Or your wall.</h1>
+    <p class="t-sub">Order trouble, drop gossip, or a poster idea nobody asked for. We read everything.</p>
+    <div class="t-cap" style="display:grid;gap:6px"><span class="muted">EMAIL</span><a data-email class="brand" style="text-decoration:underline"></a><span class="muted" style="margin-top:12px">REPLY TIME</span><span>Within 1-2 working days</span></div>
+  </div>
+  <form id="contact-form" style="display:grid;gap:20px" novalidate>
+    <div class="grid-2"><div class="field"><label for="n">Name</label><input class="input" id="n" required autocomplete="name"></div><div class="field"><label for="e">Email</label><input class="input" id="e" type="email" required autocomplete="email"></div></div>
+    <div class="field"><label for="t">What is it about?</label><select class="input" id="t"><option>An order</option><option>A return</option><option>A poster I want</option><option>Something else</option></select></div>
+    <div class="field"><label for="m">Message</label><textarea class="input" id="m" required></textarea></div>
+    <button class="btn" type="submit" style="width:fit-content">[ Send it ]</button>
+  </form>
+</section>
+<style>@media (max-width:860px){#contact-grid{grid-template-columns:1fr !important;gap:40px !important}}</style>
+</main>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
     formats: ["image/avif", "image/webp"],
   },
+  // The coming-soon page is site/coming-soon.html as written: standalone, no backend, no React.
+  async rewrites() {
+    return [{ source: "/coming-soon", destination: "/coming-soon.html" }]
+  },
   async headers() {
     return [
       {
@@ -24,7 +28,7 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     rules: {
-      "*.css": {
+      "globals.css": {
         loaders: ["@tailwindcss/turbopack"],
         as: "*.css",
       },

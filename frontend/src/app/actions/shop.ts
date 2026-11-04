@@ -1,47 +1,35 @@
 "use server"
 
-import { refresh, revalidateTag } from "next/cache"
+import { refresh } from "next/cache"
 import { redirect } from "next/navigation"
 
 import { action, type ActionResult } from "@/lib/action-result"
 import { api, unwrap } from "@/lib/api/client"
-import type { CartOut } from "@/lib/api/types"
 import { getCurrentUser } from "@/lib/session"
 
 async function requireLogin(next: string) {
   if (!(await getCurrentUser())) redirect(`/login?next=${encodeURIComponent(next)}`)
 }
 
-export async function addToWishlist(productId: string, variantId: string | null, returnTo: string): Promise<ActionResult> {
+/** The heart button: saves or un-saves a product. Guests are sent to sign in first.
+ *  ponytail: looks through the first 100 saved items; paginate if wishlists ever outgrow that. */
+export async function toggleWishlist(productId: string, returnTo: string): Promise<ActionResult<{ saved: boolean }>> {
   await requireLogin(returnTo)
   return action(async () => {
-    unwrap(await (await api()).POST("/api/v1/wishlist", { body: { product_id: productId, variant_id: variantId } }))
-  }, "Saved to your wishlist")
-}
-
-export async function removeFromWishlist(itemId: string): Promise<ActionResult> {
-  return action(async () => {
-    unwrap(await (await api()).DELETE("/api/v1/wishlist/{item_id}", { params: { path: { item_id: itemId } } }))
+    const client = await api()
+    const page = unwrap(await client.GET("/api/v1/wishlist", { params: { query: { limit: 100 } } }))
+    const hit = page.items.find((i) => i.product.id === productId)
+    if (hit) unwrap(await client.DELETE("/api/v1/wishlist/{item_id}", { params: { path: { item_id: hit.id } } }))
+    else unwrap(await client.POST("/api/v1/wishlist", { body: { product_id: productId, variant_id: null } }))
     refresh()
+    return { saved: !hit }
   })
 }
 
-export async function moveWishlistToCart(itemId: string, variantId: string | null): Promise<ActionResult<CartOut>> {
-  return action(async () => {
-    const cart = unwrap(
-      await (await api()).POST("/api/v1/wishlist/{item_id}/move-to-cart", {
-        params: { path: { item_id: itemId } },
-        body: { variant_id: variantId, quantity: 1 },
-      }),
-    )
-    refresh()
-    return cart
-  }, "Moved to your cart")
-}
-
+/** Reviews are written from delivered orders and appear after moderation (which refreshes the
+ *  product's review cache), so there is nothing to revalidate here. */
 export async function submitReview(_: ActionResult | null, form: FormData): Promise<ActionResult> {
-  const slug = String(form.get("slug") ?? "")
-  await requireLogin(`/product/${slug}#reviews`)
+  await requireLogin("/account/orders")
   return action(async () => {
     unwrap(
       await (await api()).POST("/api/v1/reviews", {
@@ -53,6 +41,5 @@ export async function submitReview(_: ActionResult | null, form: FormData): Prom
         },
       }),
     )
-    revalidateTag(`reviews:${slug}`, "max")
   }, "Thanks! Your review will appear once it's approved.")
 }

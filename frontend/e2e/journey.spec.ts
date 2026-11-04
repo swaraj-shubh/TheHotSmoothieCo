@@ -11,7 +11,7 @@ async function signIn(page: Page, user: string, pass: string) {
   await page.goto("/login")
   await page.getByLabel("Email").fill(user)
   await page.getByLabel("Password").fill(pass)
-  await page.getByRole("button", { name: "Sign in" }).click()
+  await page.getByRole("button", { name: "[ Sign in ]" }).click()
   await page.waitForURL((u) => !u.pathname.startsWith("/login"))
 }
 
@@ -24,35 +24,72 @@ test("register", async ({ page }) => {
   await expect(page).toHaveURL(/\/account/)
 })
 
+test("wishlist: the heart saves and removes", async ({ page }) => {
+  await signIn(page, email, password)
+  await page.goto("/shop")
+  await page.locator(".card__wish").first().click()
+  await expect(page.getByText(/your wall will be ready/i)).toBeVisible()
+  await page.goto("/wishlist")
+  await expect(page.locator(".card")).toHaveCount(1)
+  await page.locator(".card__wish").first().click()
+  await expect(page.getByText(/removed from your wishlist/i)).toBeVisible()
+  await expect(page.locator(".card")).toHaveCount(0)
+})
+
+test("guests are sent to sign in by the heart", async ({ page }) => {
+  await page.goto("/shop")
+  await page.locator(".card__wish").first().click()
+  await expect(page).toHaveURL(/\/login/)
+})
+
 test("checkout with a simulated payment", async ({ page }) => {
   await signIn(page, email, password)
   await page.goto("/shop")
-  await page.locator("a[href^='/product/']").first().click()
-  await page.getByRole("button", { name: "Buy now" }).click()
+  await page.getByRole("button", { name: "Add to cart" }).first().click()
+  await expect(page.locator("[data-cart-count]")).toHaveText("1")
+  await page.goto("/cart")
+  await page.getByRole("link", { name: "[ Checkout ]" }).click()
   await expect(page).toHaveURL(/\/checkout/)
 
+  // The site's validation messages.
+  await page.getByRole("button", { name: "Place order" }).click()
+  await expect(page.getByText("We need a name for the parcel.")).toBeVisible()
+
   await page.getByLabel("Full name").fill("Asha Tester")
-  await page.getByLabel("Phone").fill("9876543210")
-  await page.getByLabel("Address line 1").fill("12 MG Road")
+  await page.getByLabel("Mobile").fill("9876543210")
+  await page.getByLabel("Address", { exact: true }).fill("12 MG Road")
   await page.getByLabel("City").fill("Bengaluru")
   await page.getByLabel("State").fill("Karnataka")
-  await page.getByLabel("PIN code").fill("560001")
-  await page.getByRole("button", { name: "Save and use this address" }).click()
+  await page.getByLabel("Pin code").fill("560001")
+  await page.getByRole("button", { name: "Place order" }).click()
 
-  await page.getByRole("button", { name: "Place order & pay" }).click()
   await page.getByRole("button", { name: /simulate successful payment/i }).click()
-  await expect(page).toHaveURL(/\/account\/orders\/[0-9a-f-]{36}/)
-  await expect(page.getByText(/order is confirmed/i)).toBeVisible()
-  orderUrl = page.url().split("?")[0]
+  await expect(page).toHaveURL(/\/order-confirmed\/[0-9a-f-]{36}/)
+  await expect(page.getByRole("heading", { name: /walls are about to get interesting/i })).toBeVisible()
+  await expect(page.getByText("Delivering to")).toBeVisible()
+  orderUrl = page.url().replace("/order-confirmed/", "/account/orders/")
+  await expect(page.locator("[data-cart-count]")).toHaveText("0")
+})
+
+test("the saved address is offered next time", async ({ page }) => {
+  await signIn(page, email, password)
+  await page.goto("/shop")
+  await page.getByRole("button", { name: "Add to cart" }).first().click()
+  await expect(page.locator("[data-cart-count]")).not.toHaveText("0")
+  await page.goto("/checkout")
+  await expect(page.getByText("12 MG Road")).toBeVisible()
+  await page.goto("/cart")
+  await page.getByRole("button", { name: "Remove" }).first().click()
+  await expect(page.getByText(/empty as your wall/i)).toBeVisible()
 })
 
 test("cancel the paid order and get refunded", async ({ page }) => {
   test.skip(!orderUrl, "needs the checkout test")
   await signIn(page, email, password)
   await page.goto(orderUrl)
-  await page.getByRole("button", { name: "Cancel order" }).click()
-  await page.getByRole("button", { name: "Yes, cancel" }).click()
-  await expect(page.getByText(/^(Cancelled|Refunded|Refund pending)$/).first()).toBeVisible()
+  await page.getByRole("button", { name: "[ Cancel order ]" }).click()
+  await page.getByRole("button", { name: "[ Yes, cancel ]" }).click()
+  await expect(page.locator(".chip").getByText(/^(Cancelled|Refunded|Refund pending)$/)).toBeVisible()
 })
 
 test("staff can find the order in the admin", async ({ page }) => {
@@ -64,10 +101,10 @@ test("staff can find the order in the admin", async ({ page }) => {
   const link = page.locator("a[href^='/admin/orders/']").first()
   await expect(link).toBeVisible()
   await link.click()
-  await expect(page.getByText(email)).toBeVisible()
-  await expect(page.getByText("Timeline")).toBeVisible()
+  await expect(page.getByText(email).filter({ visible: true }).first()).toBeVisible()
+  await expect(page.getByText("Timeline").filter({ visible: true }).first()).toBeVisible()
   for (const path of ["/admin/dashboard", "/admin/products", "/admin/inventory", "/admin/customers", "/admin/settings"]) {
     await page.goto(path)
-    await expect(page.locator("h1")).toBeVisible()
+    await expect(page.locator("h1").filter({ visible: true }).first()).toBeVisible()
   }
 })

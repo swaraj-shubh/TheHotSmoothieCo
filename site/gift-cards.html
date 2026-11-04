@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gift cards · The Hot Smoothie Co.</title>
+<meta name="description" content="Digital gift cards from The Hot Smoothie Co. They pick the obsession.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/croc-wordmark.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="gift">
+<main id="main-content">
+<nav class="crumbs wrap t-cap" aria-label="Breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Gift cards</span></nav>
+<section class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;padding-top:48px;padding-bottom:96px" id="gift-grid">
+  <div style="display:grid;gap:28px;justify-items:start">
+    <span class="t-label brand">GIFT CARDS</span>
+    <h1 class="t-display">For the friend who would argue about it.</h1>
+    <p class="t-sub">Digital gift cards, delivered by email. They pick the obsession.</p>
+    <div class="gift-card-preview" aria-hidden="true"><span class="t-label">THE HOT SMOOTHIE CO. · GIFT CARD</span><span class="t-display" id="gc-amt" style="color:var(--linen)"></span><img src="assets/croc-wordmark.png" alt=""></div>
+  </div>
+  <form id="gift-form" style="display:grid;gap:24px" novalidate>
+    <div class="field"><span class="t-label">Amount</span><div class="pill-group" id="amts" role="radiogroup" aria-label="Amount"></div></div>
+    <div class="field"><label for="to">Their email</label><input class="input" id="to" name="to" type="email" required placeholder="friend@example.com"></div>
+    <div class="field"><label for="msg">A note (optional)</label><textarea class="input" id="msg" name="msg" maxlength="200" placeholder="Something unhinged and loving."></textarea></div>
+    <button class="ticket-btn" type="submit" style="width:fit-content">Add gift card to cart</button>
+    <p class="t-cap muted">Delivered by email within minutes of payment. No shipping, no waiting.</p>
+  </form>
+</section>
+<style>@media (max-width:860px){#gift-grid{grid-template-columns:1fr !important;gap:40px !important}}</style>
+</main>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

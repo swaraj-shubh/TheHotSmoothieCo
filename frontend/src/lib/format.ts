@@ -10,6 +10,22 @@ export function rupees(paise: number | null | undefined, { decimals = false } = 
   }).format(value)
 }
 
+/** The storefront's price format: 49900 -> "Rs. 499". */
+export function money(paise: number | null | undefined): string {
+  return "Rs. " + ((paise ?? 0) / 100).toLocaleString("en-IN")
+}
+
+/** Cloudinary delivery URL resized for display, never cropped (other hosts pass through unchanged). */
+export function cdn(url: string, width: number): string {
+  return url
+    .replace(/\/image\/upload\/c_fill,w_\d+,h_\d+,q_auto,f_auto\//, "/image/upload/") // the API's square thumbnails
+    .replace(/\/image\/upload\/(?!f_auto)/, `/image/upload/f_auto,q_auto,c_limit,w_${width}/`)
+}
+
+/** A cart or order line's size, falling back to the variant's name. */
+export const sizeOf = (item: { attributes: Record<string, unknown>; variant_title: string }) =>
+  (item.attributes.size as string | undefined) ?? item.variant_title
+
 export function percentOff(price: number, compareAt: number | null | undefined): number | null {
   if (!compareAt || compareAt <= price) return null
   return Math.round(((compareAt - price) / compareAt) * 100)
@@ -33,6 +49,14 @@ export function titleCase(status: string): string {
     .map((w) => w[0].toUpperCase() + w.slice(1))
     .join(" ")
 }
+
+const ORDER_LABELS: Record<string, string> = {
+  PENDING_PAYMENT: "Awaiting payment",
+  PAYMENT_PROCESSING: "Payment processing",
+  PROCESSING: "Being printed",
+}
+/** Customer-facing order status. */
+export const orderLabel = (status: string) => ORDER_LABELS[status] ?? titleCase(status)
 
 /** Rupee string from a form ("1,499.50") -> paise, or null if blank/invalid. */
 export function toPaise(input: FormDataEntryValue | null): number | null {

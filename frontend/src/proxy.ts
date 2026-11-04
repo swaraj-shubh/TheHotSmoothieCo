@@ -73,5 +73,5 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   // Pages and Server Functions only: never static assets or image optimisation.
-  matcher: ["/((?!_next/static|_next/image|icon|apple-icon|opengraph-image|logo.png|robots.txt|sitemap.xml).*)"],
+  matcher: ["/((?!_next/static|_next/image|assets|css/|js/|coming-soon|icon|apple-icon|opengraph-image|logo.png|robots.txt|sitemap.xml).*)"],
 }
