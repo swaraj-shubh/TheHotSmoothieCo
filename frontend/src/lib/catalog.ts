@@ -38,6 +38,25 @@ export type ProductQuery = {
 
 const EMPTY_PAGE: Page<ProductCard> = { items: [], next_cursor: null }
 
+/**
+ * A page's own data: an API failure at request time reaches the error page, but during `next build`
+ * it must not fail the deploy. The short lifetime keeps that result out of the prerendered shell,
+ * so the real page is fetched on the first visit rather than a false 404 being baked in.
+ */
+async function pageData<T>(life: "minutes" | "hours", load: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    const data = await load()
+    if (life === "hours") cacheLife("hours")
+    else cacheLife("minutes")
+    return data
+  } catch (err) {
+    if (process.env.NEXT_PHASE !== "phase-production-build") throw err
+    console.warn("Catalog API failed during the build; this page will render on first visit:", err)
+    cacheLife("seconds")
+    return fallback
+  }
+}
+
 export async function getCategories(): Promise<CategoryNode[]> {
   "use cache"
   cacheTag("catalog", "categories")
@@ -86,9 +105,8 @@ export async function getCollections(): Promise<CollectionOut[]> {
 
 export async function getCollection(slug: string): Promise<CollectionOut | null> {
   "use cache"
-  cacheLife("hours")
   cacheTag("catalog", "collections")
-  return unwrapOrNull(await publicApi.GET("/api/v1/collections/{slug}", { params: { path: { slug } } }))
+  return pageData("hours", async () => unwrapOrNull(await publicApi.GET("/api/v1/collections/{slug}", { params: { path: { slug } } })), null)
 }
 
 export async function getProducts(query: ProductQuery): Promise<Page<ProductCard>> {
@@ -112,9 +130,8 @@ export async function getProducts(query: ProductQuery): Promise<Page<ProductCard
  *  re-check live stock and prices. */
 export async function getProduct(slug: string): Promise<ProductDetail | null> {
   "use cache"
-  cacheLife("minutes")
   cacheTag("catalog", "products", `product:${slug}`)
-  return unwrapOrNull(await publicApi.GET("/api/v1/products/{slug}", { params: { path: { slug } } }))
+  return pageData("minutes", async () => unwrapOrNull(await publicApi.GET("/api/v1/products/{slug}", { params: { path: { slug } } })), null)
 }
 
 export async function searchProducts(q: string, query: ProductQuery): Promise<SearchPage> {
@@ -135,13 +152,18 @@ export async function getReviews(slug: string, cursor?: string): Promise<{
   summary: ReviewSummary | null
 }> {
   "use cache"
-  cacheLife("minutes")
   cacheTag("reviews", `reviews:${slug}`)
-  const [page, summary] = await Promise.all([
-    publicApi.GET("/api/v1/products/{slug}/reviews", { params: { path: { slug }, query: { cursor, limit: 10 } } }),
-    publicApi.GET("/api/v1/products/{slug}/reviews/summary", { params: { path: { slug } } }),
-  ])
-  return { page: unwrapOrNull(page) ?? { items: [] }, summary: unwrapOrNull(summary) }
+  return pageData(
+    "minutes",
+    async () => {
+      const [page, summary] = await Promise.all([
+        publicApi.GET("/api/v1/products/{slug}/reviews", { params: { path: { slug }, query: { cursor, limit: 10 } } }),
+        publicApi.GET("/api/v1/products/{slug}/reviews/summary", { params: { path: { slug } } }),
+      ])
+      return { page: unwrapOrNull(page) ?? { items: [] }, summary: unwrapOrNull(summary) }
+    },
+    { page: { items: [] }, summary: null },
+  )
 }
 
 export async function getBanners(placement: "HOME_HERO" | "HOME_STRIP" | "SHOP_TOP"): Promise<BannerOut[]> {
@@ -157,6 +179,8 @@ export async function getBanners(placement: "HOME_HERO" | "HOME_STRIP" | "SHOP_T
   }
 }
 
+// The two below only combine cached calls. They have no cache of their own, so a failed fetch stays
+// short-lived instead of an empty result being held for the outer cache's lifetime.
 export type CardExtra = { collection?: string; collectionSlug?: string; chip?: string }
 
 const CHIPS: Record<string, string> = { bestseller: "Bestseller", "new-drop": "New drop", "crocs-pick": "Croc’s pick" }
@@ -164,9 +188,6 @@ const CHIPS: Record<string, string> = { bestseller: "Bestseller", "new-drop": "N
 /** Every active product. ponytail: stops at 500; the shop filters client-side like the design does,
  *  so move filtering to the API if the catalogue outgrows that. */
 export async function getAllProducts(): Promise<ProductCard[]> {
-  "use cache"
-  cacheTag("catalog", "products")
-  cacheLife("minutes")
   const all: ProductCard[] = []
   let cursor: string | undefined
   do {
@@ -180,9 +201,6 @@ export async function getAllProducts(): Promise<ProductCard[]> {
 /** What a product card shows beyond the list API's fields: its collection name and chip.
  *  Derived from the collection and tag filters, keyed by product id. */
 export async function getCardExtras(): Promise<Record<string, CardExtra>> {
-  "use cache"
-  cacheTag("catalog", "products", "collections")
-  cacheLife("minutes")
   const extras: Record<string, CardExtra> = {}
   const of = (id: string) => (extras[id] ??= {})
   const [collections, ...chips] = await Promise.all([

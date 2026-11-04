@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlalchemy import DateTime, MetaData, func
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.pool import NullPool
 
 from app.core.config import get_settings
 
@@ -39,12 +40,19 @@ class Timestamps:
 
 
 _settings = get_settings()
+_pool_args: dict = (
+    {"poolclass": NullPool}
+    if _settings.db_null_pool
+    else {
+        "pool_size": _settings.db_pool_size,
+        "max_overflow": _settings.db_max_overflow,
+        "pool_pre_ping": True,
+        "pool_recycle": 1800,
+    }
+)
 engine = create_async_engine(
     _settings.database_url,
-    pool_size=_settings.db_pool_size,
-    max_overflow=_settings.db_max_overflow,
-    pool_pre_ping=True,
-    pool_recycle=1800,
+    **_pool_args,
     connect_args={"statement_cache_size": 0, "prepared_statement_cache_size": 0}
     if _settings.db_pgbouncer
     else {},

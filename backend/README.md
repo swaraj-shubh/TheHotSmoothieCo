@@ -76,7 +76,6 @@ region `bom1` from `vercel.json`). Set these env vars in Vercel (same names as `
 |---|---|
 | `ENVIRONMENT` | `production` (or `staging` while testing) |
 | `DATABASE_URL`, `DB_PGBOUNCER=true` | Neon **pooled** (`-pooler`) string; use a separate prod DB/branch |
-| `DB_POOL_SIZE=1`, `DB_MAX_OVERFLOW=0` | Every serverless instance has its own pool; keep it tiny |
 | `REDIS_URL` | Upstash `rediss://…` |
 | `JWT_SECRET` | 32+ random chars (`openssl rand -hex 32`); the app refuses to start in staging/production without it |
 | `CORS_ORIGINS`, `FRONTEND_URL` | your frontend URL, e.g. `["https://shop.example.com"]` |
@@ -86,6 +85,9 @@ region `bom1` from `vercel.json`). Set these env vars in Vercel (same names as `
 | `SHIPPING_FLAT_PAISE=7900` | matches the Rs. 79 in the storefront's copy |
 | `CRON_SECRET` | random string, used by the job trigger below |
 | `PAYMENTS_PROVIDER=razorpay` + keys | required in production (`dev` is refused) |
+
+On Vercel the app opens one database connection per request and one Redis client per event loop
+(automatic, from the `VERCEL` variable), so `DB_POOL_SIZE`/`DB_MAX_OVERFLOW` are ignored there.
 
 Run migrations from your machine against the production `DATABASE_URL` (`alembic upgrade head`); Vercel does not run them.
 

@@ -123,7 +123,7 @@ test("shop: filter, sort, and the header after client-side navigation", async ({
 
 test("product: views, wall colour, sizes change price and dimensions", async ({ page }) => {
   await page.goto("/product/red-bull-1")
-  await expect(page.locator(".pdp__thumbs button")).toHaveCount(3)
+  await expect(page.locator(".pdp__thumbs button").nth(1)).toBeVisible() // poster, framed; room shots need Cloudinary
   await expect(page.locator(".pdp__buy .t-price")).toHaveText("Rs. 499")
   await expect(page.getByText("21 × 29.7 cm")).toBeVisible()
   await expect(() => page.getByRole("radio", { name: "A3" }).check({ force: true, timeout: 1000 })).toPass()

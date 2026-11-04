@@ -1,3 +1,4 @@
+import os
 from functools import lru_cache
 from typing import Literal
 
@@ -21,6 +22,10 @@ class Settings(BaseSettings):
     # True when DATABASE_URL points at a transaction-mode pooler (Supabase :6543, Neon "-pooler" host,
     # RDS Proxy...). asyncpg's prepared-statement cache breaks under transaction pooling.
     db_pgbouncer: bool = False
+    # Serverless (Vercel sets VERCEL=1): open one connection per request instead of sharing a pool.
+    # Pooled connections break when the platform runs requests on separate event loops, and a tiny
+    # per-instance pool queues bursts until they time out. Use a pooler URL (Neon "-pooler") with it.
+    db_null_pool: bool = Field(default_factory=lambda: "VERCEL" in os.environ)
     redis_url: str = "redis://127.0.0.1:6379/0"
 
     jwt_secret: SecretStr = SecretStr("dev-only-change-me-dev-only-change-me")
